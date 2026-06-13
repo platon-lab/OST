@@ -4,61 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PLATON GAMES OST</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0d0e15;
-            --panel-bg: #1a1c28;
+            --bg-gradient: linear-gradient(135deg, #08090c 0%, #12141c 100%);
+            --panel-bg: rgba(26, 28, 40, 0.45);
+            --panel-border: rgba(255, 255, 255, 0.06);
             --accent-color: #ff4757;
-            --accent-hover: #ff6b81;
+            --accent-glow: rgba(255, 71, 87, 0.35);
             --text-color: #f1f2f6;
             --text-muted: #a4b0be;
-            --player-bg: #222538;
+            --glass-blur: blur(12px);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Montserrat', sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
+            background: var(--bg-gradient);
             color: var(--text-color);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 2rem 1rem;
+            padding: 3rem 1rem;
+            overflow-x: hidden;
         }
 
         header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
             max-width: 800px;
+            position: relative;
         }
 
         header h1 {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 800;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            background: linear-gradient(45deg, var(--accent-color), #ffa502);
+            background: linear-gradient(45deg, var(--accent-color), #ff6b81, #ffa502);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
-            filter: drop-shadow(0 2px 8px rgba(255, 71, 87, 0.3));
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 4px 12px var(--accent-glow));
         }
 
         header p {
             color: var(--text-muted);
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            font-weight: 400;
         }
 
         .playlist-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
             width: 100%;
             max-width: 1200px;
             padding: 0 1rem;
@@ -66,76 +73,173 @@
 
         .track-card {
             background: var(--panel-bg);
-            border-radius: 12px;
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: 16px;
             padding: 1.5rem;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            transition: transform 0.2s ease, border-color 0.2s ease;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border: 1px solid var(--panel-border);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            gap: 1.2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .track-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 71, 87, 0.05) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
         .track-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(255, 71, 87, 0.3);
+            transform: translateY(-6px);
+            border-color: rgba(255, 71, 87, 0.4);
+            box-shadow: 0 12px 40px 0 var(--accent-glow);
+        }
+
+        .track-card:hover::before {
+            opacity: 1;
         }
 
         .track-info {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
+            gap: 1.2rem;
+            position: relative;
+            z-index: 2;
         }
 
         .track-icon {
-            background: rgba(255, 71, 87, 0.1);
+            background: rgba(255, 71, 87, 0.12);
             color: var(--accent-color);
-            width: 45px;
-            height: 45px;
-            border-radius: 8px;
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
-            font-weight: bold;
+            font-size: 1.1rem;
+            font-weight: 800;
+            border: 1px solid rgba(255, 71, 87, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .track-card:hover .track-icon {
+            background: var(--accent-color);
+            color: #fff;
+            box-shadow: 0 0 15px var(--accent-color);
+            border-color: transparent;
         }
 
         .track-title {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: 600;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             flex-grow: 1;
+            letter-spacing: 0.5px;
         }
 
-        audio {
+        /* Кастомний інтерфейс плеєра */
+        .custom-player {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.6rem 1rem;
+            border-radius: 12px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .play-btn {
+            background: var(--accent-color);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+            background-color: #ff6b81;
+        }
+
+        .play-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: #fff;
+            transition: all 0.2s ease;
+        }
+
+        .timeline-container {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .progress-bar {
             width: 100%;
-            border-radius: 8px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.1);
+            height: 6px;
+            border-radius: 3px;
             outline: none;
+            cursor: pointer;
         }
 
-        /* Стилізація стандартного плеєра для сучасних браузерів */
-        audio::-webkit-media-controls-panel {
-            background-color: var(--player-bg);
+        .progress-bar::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            box-shadow: 0 0 8px var(--accent-color);
+            transition: transform 0.1s ease;
         }
-        audio::-webkit-media-controls-current-time-display,
-        audio::-webkit-media-controls-time-remaining-display {
-            color: var(--text-color);
+
+        .progress-bar::-webkit-slider-thumb:hover {
+            transform: scale(1.3);
+        }
+
+        .time-display {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            min-width: 35px;
+            text-align: right;
+            font-variant-numeric: tabular-nums;
         }
 
         footer {
             margin-top: auto;
-            padding-top: 3rem;
+            padding-top: 5rem;
             color: var(--text-muted);
             font-size: 0.9rem;
             text-align: center;
+            letter-spacing: 1px;
         }
 
         @media (max-width: 600px) {
             header h1 {
-                font-size: 2rem;
+                font-size: 2.3rem;
             }
             .playlist-container {
                 grid-template-columns: 1fr;
@@ -151,14 +255,22 @@
     </header>
 
     <main class="playlist-container">
-        <!-- Теги аудіо використовують відносні шляхи до файлів, які мають лежати в тій же папці або поруч -->
         
         <div class="track-card">
             <div class="track-info">
                 <div class="track-icon">01</div>
                 <div class="track-title" title="Intro">Intro</div>
             </div>
-            <audio controls src="Intro.mp3" preload="none"></audio>
+            <div class="custom-player">
+                <button class="play-btn" aria-label="Play">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="timeline-container">
+                    <input type="range" class="progress-bar" value="0" max="100">
+                </div>
+                <div class="time-display">0:00</div>
+                <audio src="Intro.mp3" preload="none"></audio>
+            </div>
         </div>
 
         <div class="track-card">
@@ -166,7 +278,16 @@
                 <div class="track-icon">02</div>
                 <div class="track-title" title="Start">Start</div>
             </div>
-            <audio controls src="Start.mp3" preload="none"></audio>
+            <div class="custom-player">
+                <button class="play-btn" aria-label="Play">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="timeline-container">
+                    <input type="range" class="progress-bar" value="0" max="100">
+                </div>
+                <div class="time-display">0:00</div>
+                <audio src="Start.mp3" preload="none"></audio>
+            </div>
         </div>
 
         <div class="track-card">
@@ -174,7 +295,16 @@
                 <div class="track-icon">03</div>
                 <div class="track-title" title="Troll">Troll</div>
             </div>
-            <audio controls src="Troll.mp3" preload="none"></audio>
+            <div class="custom-player">
+                <button class="play-btn" aria-label="Play">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="timeline-container">
+                    <input type="range" class="progress-bar" value="0" max="100">
+                </div>
+                <div class="time-display">0:00</div>
+                <audio src="Troll.mp3" preload="none"></audio>
+            </div>
         </div>
 
         <div class="track-card">
@@ -182,7 +312,16 @@
                 <div class="track-icon">04</div>
                 <div class="track-title" title="TRUE END">TRUE END</div>
             </div>
-            <audio controls src="TRUE END.mp3" preload="none"></audio>
+            <div class="custom-player">
+                <button class="play-btn" aria-label="Play">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="timeline-container">
+                    <input type="range" class="progress-bar" value="0" max="100">
+                </div>
+                <div class="time-display">0:00</div>
+                <audio src="TRUE END.mp3" preload="none"></audio>
+            </div>
         </div>
 
         <div class="track-card">
@@ -190,7 +329,16 @@
                 <div class="track-icon">05</div>
                 <div class="track-title" title="Last Second">Last Second</div>
             </div>
-            <audio controls src="Last Second.mp3" preload="none"></audio>
+            <div class="custom-player">
+                <button class="play-btn" aria-label="Play">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="timeline-container">
+                    <input type="range" class="progress-bar" value="0" max="100">
+                </div>
+                <div class="time-display">0:00</div>
+                <audio src="Last Second.mp3" preload="none"></audio>
+            </div>
         </div>
 
         <div class="track-card">
@@ -198,7 +346,16 @@
                 <div class="track-icon">06</div>
                 <div class="track-title" title="Tiles">Tiles</div>
             </div>
-            <audio controls src="Tiles.mp3" preload="none"></audio>
+            <div class="custom-player">
+                <button class="play-btn" aria-label="Play">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="timeline-container">
+                    <input type="range" class="progress-bar" value="0" max="100">
+                </div>
+                <div class="time-display">0:00</div>
+                <audio src="Tiles.mp3" preload="none"></audio>
+            </div>
         </div>
 
         <div class="track-card">
@@ -206,7 +363,16 @@
                 <div class="track-icon">07</div>
                 <div class="track-title" title="NOT COMPLETE">NOT COMPLETE</div>
             </div>
-            <audio controls src="NOT COMPLETE.mp3" preload="none"></audio>
+            <div class="custom-player">
+                <button class="play-btn" aria-label="Play">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="timeline-container">
+                    <input type="range" class="progress-bar" value="0" max="100">
+                </div>
+                <div class="time-display">0:00</div>
+                <audio src="NOT COMPLETE.mp3" preload="none"></audio>
+            </div>
         </div>
 
         <div class="track-card">
@@ -214,7 +380,16 @@
                 <div class="track-icon">08</div>
                 <div class="track-title" title="Relax">Relax</div>
             </div>
-            <audio controls src="Relax.mp3" preload="none"></audio>
+            <div class="custom-player">
+                <button class="play-btn" aria-label="Play">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="timeline-container">
+                    <input type="range" class="progress-bar" value="0" max="100">
+                </div>
+                <div class="time-display">0:00</div>
+                <audio src="Relax.mp3" preload="none"></audio>
+            </div>
         </div>
 
         <div class="track-card">
@@ -222,7 +397,16 @@
                 <div class="track-icon">09</div>
                 <div class="track-title" title="Tito">Tito</div>
             </div>
-            <audio controls src="Tito.mp3" preload="none"></audio>
+            <div class="custom-player">
+                <button class="play-btn" aria-label="Play">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="timeline-container">
+                    <input type="range" class="progress-bar" value="0" max="100">
+                </div>
+                <div class="time-display">0:00</div>
+                <audio src="Tito.mp3" preload="none"></audio>
+            </div>
         </div>
 
         <div class="track-card">
@@ -230,7 +414,16 @@
                 <div class="track-icon">10</div>
                 <div class="track-title" title="Smartik">Smartik</div>
             </div>
-            <audio controls src="Smartik.mp3" preload="none"></audio>
+            <div class="custom-player">
+                <button class="play-btn" aria-label="Play">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="timeline-container">
+                    <input type="range" class="progress-bar" value="0" max="100">
+                </div>
+                <div class="time-display">0:00</div>
+                <audio src="Smartik.mp3" preload="none"></audio>
+            </div>
         </div>
 
         <div class="track-card">
@@ -238,7 +431,16 @@
                 <div class="track-icon">11</div>
                 <div class="track-title" title="Junior">Junior</div>
             </div>
-            <audio controls src="Junior.mp3" preload="none"></audio>
+            <div class="custom-player">
+                <button class="play-btn" aria-label="Play">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="timeline-container">
+                    <input type="range" class="progress-bar" value="0" max="100">
+                </div>
+                <div class="time-display">0:00</div>
+                <audio src="Junior.mp3" preload="none"></audio>
+            </div>
         </div>
 
         <div class="track-card">
@@ -246,7 +448,16 @@
                 <div class="track-icon">12</div>
                 <div class="track-title" title="Fil">Fil</div>
             </div>
-            <audio controls src="Fil.mp3" preload="none"></audio>
+            <div class="custom-player">
+                <button class="play-btn" aria-label="Play">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="timeline-container">
+                    <input type="range" class="progress-bar" value="0" max="100">
+                </div>
+                <div class="time-display">0:00</div>
+                <audio src="Fil.mp3" preload="none"></audio>
+            </div>
         </div>
 
         <div class="track-card">
@@ -254,7 +465,16 @@
                 <div class="track-icon">13</div>
                 <div class="track-title" title="Milka">Milka</div>
             </div>
-            <audio controls src="Milka.mp3" preload="none"></audio>
+            <div class="custom-player">
+                <button class="play-btn" aria-label="Play">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="timeline-container">
+                    <input type="range" class="progress-bar" value="0" max="100">
+                </div>
+                <div class="time-display">0:00</div>
+                <audio src="Milka.mp3" preload="none"></audio>
+            </div>
         </div>
 
         <div class="track-card">
@@ -262,7 +482,16 @@
                 <div class="track-icon">14</div>
                 <div class="track-title" title="Bark">Bark</div>
             </div>
-            <audio controls src="Bark.mp3" preload="none"></audio>
+            <div class="custom-player">
+                <button class="play-btn" aria-label="Play">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="timeline-container">
+                    <input type="range" class="progress-bar" value="0" max="100">
+                </div>
+                <div class="time-display">0:00</div>
+                <audio src="Bark.mp3" preload="none"></audio>
+            </div>
         </div>
 
         <div class="track-card">
@@ -270,7 +499,16 @@
                 <div class="track-icon">15</div>
                 <div class="track-title" title="Monster">Monster</div>
             </div>
-            <audio controls src="Monster.mp3" preload="none"></audio>
+            <div class="custom-player">
+                <button class="play-btn" aria-label="Play">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="timeline-container">
+                    <input type="range" class="progress-bar" value="0" max="100">
+                </div>
+                <div class="time-display">0:00</div>
+                <audio src="Monster.mp3" preload="none"></audio>
+            </div>
         </div>
 
         <div class="track-card">
@@ -278,7 +516,16 @@
                 <div class="track-icon">16</div>
                 <div class="track-title" title="Fake Ending">Fake Ending</div>
             </div>
-            <audio controls src="Fake Ending.mp3" preload="none"></audio>
+            <div class="custom-player">
+                <button class="play-btn" aria-label="Play">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="timeline-container">
+                    <input type="range" class="progress-bar" value="0" max="100">
+                </div>
+                <div class="time-display">0:00</div>
+                <audio src="Fake Ending.mp3" preload="none"></audio>
+            </div>
         </div>
 
         <div class="track-card">
@@ -286,8 +533,35 @@
                 <div class="track-icon">17</div>
                 <div class="track-title" title="Bossfight">Bossfight</div>
             </div>
-            <audio controls src="Bossfight.mp3" preload="none"></audio>
+            <div class="custom-player">
+                <button class="play-btn" aria-label="Play">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="timeline-container">
+                    <input type="range" class="progress-bar" value="0" max="100">
+                </div>
+                <div class="time-display">0:00</div>
+                <audio src="Bossfight.mp3" preload="none"></audio>
+            </div>
         </div>
+
+        <div class="track-card">
+            <div class="track-info">
+                <div class="track-icon">18</div>
+                <div class="track-title" title="Майонез">Mayo</div>
+            </div>
+            <div class="custom-player">
+                <button class="play-btn" aria-label="Play">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="timeline-container">
+                    <input type="range" class="progress-bar" value="0" max="100">
+                </div>
+                <div class="time-display">0:00</div>
+                <audio src="Майонез.mp3" preload="none"></audio>
+            </div>
+        </div>
+
     </main>
 
     <footer>
@@ -295,15 +569,72 @@
     </footer>
 
     <script>
-        // Автоматично зупиняє інші плеєри, якщо вмикається новий
-        const audios = document.querySelectorAll('audio');
-        audios.forEach(audio => {
+        const cards = document.querySelectorAll('.track-card');
+        const allAudios = [];
+
+        cards.forEach(card => {
+            const audio = card.querySelector('audio');
+            const playBtn = card.querySelector('.play-btn');
+            const progressBar = card.querySelector('.progress-bar');
+            const timeDisplay = card.querySelector('.time-display');
+            
+            if (!audio) return;
+            allAudios.push(audio);
+
+            // Значки для Старт/Пауза
+            const playIcon = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+            const pauseIcon = '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+
+            // Функція форматування часу
+            function formatTime(seconds) {
+                if (isNaN(seconds)) return "0:00";
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+
+            // Клік по кнопці Play/Pause
+            playBtn.addEventListener('click', () => {
+                if (audio.paused) {
+                    // Зупиняємо всі інші треки перед стартом нового
+                    allAudios.forEach(otherAudio => {
+                        if (otherAudio !== audio) {
+                            otherAudio.pause();
+                        }
+                    });
+                    audio.play();
+                } else {
+                    audio.pause();
+                }
+            });
+
+            // Події самого аудіо-елемента
             audio.addEventListener('play', () => {
-                audios.forEach(otherAudio => {
-                    if (otherAudio !== audio) {
-                        otherAudio.pause();
-                    }
-                });
+                playBtn.innerHTML = pauseIcon;
+            });
+
+            audio.addEventListener('pause', () => {
+                playBtn.innerHTML = playIcon;
+            });
+
+            audio.addEventListener('timeupdate', () => {
+                if (audio.duration) {
+                    const percentage = (audio.currentTime / audio.duration) * 100;
+                    progressBar.value = percentage;
+                    timeDisplay.textContent = formatTime(audio.currentTime);
+                }
+            });
+
+            audio.addEventListener('loadedmetadata', () => {
+                timeDisplay.textContent = formatTime(audio.duration);
+            });
+
+            // Керування повзунком прогресу
+            progressBar.addEventListener('input', () => {
+                if (audio.duration) {
+                    const newTime = (progressBar.value / 100) * audio.duration;
+                    audio.currentTime = newTime;
+                }
             });
         });
     </script>
